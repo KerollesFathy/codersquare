@@ -3,7 +3,7 @@ import { User, Post, Like, Comment} from "../../types";
 
 
 export class InMemoryDatastore implements Datastore {
-	private users: Users[] = [];
+	private users: User[] = [];
 	private posts: Post[] = [];
 	private comments: Comment[] = [];
 	private likes: Like[] = [];
@@ -16,7 +16,7 @@ export class InMemoryDatastore implements Datastore {
 		return this.users.find(u => u.email === email);
 	}
 
-	getUserByUsername(email): User | undefined {
+	getUserByUsername(email: string): User | undefined {
 		return this.users.find(u => u.username === email)
 	}
 
@@ -28,7 +28,7 @@ export class InMemoryDatastore implements Datastore {
 		this.posts.push(post);
 	}
 
-	getPost(id: string): Post {
+	getPost(id: string): Post | undefined{
 		return this.posts.find(p => p.id === id);
 	}
 
