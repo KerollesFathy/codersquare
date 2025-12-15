@@ -3,34 +3,37 @@ import { db } from '../datastore';
 import { Post } from '../types';
 import crypto from 'crypto';
 
+// Re-using your types
 export type ExpressHandler<Req, Res> = RequestHandler<string, Partial<Res>, Partial<Req>, any>;
-
-export const listPostsHandler: RequestHandler = (request, response) => {
-    throw new Error('oops!');
-    response.send({ posts: db.listPosts() });
-};
-
 type createPostRequest = Pick<Post, 'title' | 'url' | 'userId'>;
 interface createPostResponse {}
 
-export const createPostHandler: ExpressHandler<createPostRequest, createPostResponse> = (
+// --- HANDLERS ---
+export const listPostsHandler: RequestHandler = async (request, response) => {
+    response.send({ posts: await db.listPosts() });
+};
+
+export const createPostHandler: ExpressHandler<createPostRequest, createPostResponse> = async (
     req,
     res
 ) => {
-    if (!req.body.title) {
-        return res.status(400).send('Title field is required');
+    const { title, url, userId } = req.body;
+
+    if (!title || !url || !userId) {
+        return res.status(400).send({
+            error: 'Missing required fields: title, url, and userId are all required.'
+        });
     }
 
-    if (!req.body.title || !req.body.url || !req.body.userId) {
-        return res.status(400);
-    }
     const post: Post = {
         id: crypto.randomUUID(),
         postedAt: Date.now(),
-        title: req.body.title,
-        url: req.body.url,
-        userId: req.body.userId,
+        title: title,
+        url: url,
+        userId: userId,
     };
-    db.createPost(post);
-    res.sendStatus(200);
+
+    await db.createPost(post);
+
+    return res.sendStatus(201); 
 };

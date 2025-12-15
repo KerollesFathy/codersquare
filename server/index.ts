@@ -15,6 +15,7 @@ app.get('/posts', listPostsHandler);
 
 app.post('/posts', createPostHandler);
 
+
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     console.error('Uncaught exeption', err);
     return res.status(500).send({ error: 'Oops, an unexpected error occurred, please try again' });
