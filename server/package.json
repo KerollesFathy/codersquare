@@ -12,11 +12,13 @@
     "dependencies": {
         "express": "^5.1.0",
         "nodemon": "^3.1.10",
+        "sqlite3": "^5.1.7",
         "typescript": "^5.9.2"
     },
     "devDependencies": {
         "@types/express": "^5.0.3",
         "@types/node": "^24.5.2",
+        "@types/sqlite3": "^5.1.0",
         "prettier": "^3.6.2",
         "ts-node": "^10.9.2"
     }

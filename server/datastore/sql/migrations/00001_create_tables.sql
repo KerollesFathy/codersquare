@@ -1,0 +1,35 @@
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY,
+  firstName TEXT NOT NULL,
+  lastName TEXT NOT NULL,
+  username TEXT NOT NULL UNIQUE,
+  email TEXT NOT NULL UNIQUE,
+  password TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  url TEXT NOT NULL,
+  userId TEXT NOT NULL,
+  postedAt INTEGER NOT NULL,
+  FOREIGN KEY (userId) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS likes (
+  userId TEXT NOT NULL,
+  postId TEXT NOT NULL,
+  PRIMARY KEY (userId, postId),
+  FOREIGN KEY (userId) REFERENCES users(id),
+  FOREIGN KEY (postId) REFERENCES posts(id)
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+  id TEXT PRIMARY KEY,
+  userId TEXT NOT NULL,
+  postId TEXT NOT NULL,
+  comment TEXT NOT NULL,
+  postedAt INTEGER NOT NULL,
+  FOREIGN KEY (userId) REFERENCES users(id),
+  FOREIGN KEY (postId) REFERENCES posts(id)
+);
